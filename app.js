@@ -22,8 +22,8 @@ function databaseInitialize() {
         User = db.addCollection("users");
         User.insert({username:'admin',password:'admin'});
         User.insert({username:'user',password:'user'});
-        User.insert({username:'Jonathan',password:'12345'});
     }
+    User.insert({username:'Jonathan',password:'12345'});
     if (Item === null) {
         Item = db.addCollection('items');
     }
@@ -100,13 +100,13 @@ app.get('/additem', function (request, response) {
 });
 
 app.get('/like', function (request, response) {
-    var movieName = request.query.movieName;
-    var items = likeAndSort('items', movieName);
+    var movieName = request.query.item;
+    var items = likeAndSort('movieName', movieName);
     response.render('listpage',{ items:items });
 });
 app.get('/delete', function (request, response) {
-    var item = request.query.movieName;
-    var items = deleteAndSort('items', item);
+    var item = request.query.item;
+    var items = deleteAndSort('movieName', item);
     response.render('listpage',{ items:items });
 });
 // click Welcome on login page

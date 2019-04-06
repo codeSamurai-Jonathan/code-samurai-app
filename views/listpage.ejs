@@ -29,8 +29,11 @@
             <td> <%=item.favouriteActor %> </td>
             <td> <%=item.movieURL %> </td>
             <td> <%=item.addedBy %> </td>
-            <td> <a href="/like?item=<%= item.movieName%>"><i class="thumb_up material-icons">thumb_up</i></a></td>
-            <td> <a href="/delete?item=<%= item%>"><i class="delete material-icons">delete</i></a></td>
+            <td><%=item.likes %> </td>
+            <td>
+                <a href="/like?item=<%= item.movieName%>"><i class="thumb_up material-icons">thumb_up</i></a>
+                <a href="/delete?item=<%= item.movieName%>"><i class="delete material-icons">delete</i></a>
+            </td>
 
         </tr>
 
