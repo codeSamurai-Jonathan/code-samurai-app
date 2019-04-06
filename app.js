@@ -22,6 +22,7 @@ function databaseInitialize() {
         User = db.addCollection("users");
         User.insert({username:'admin',password:'admin'});
         User.insert({username:'user',password:'user'});
+        User.insert({username:'Jonathan',password:'12345'});
     }
     if (Item === null) {
         Item = db.addCollection('items');
@@ -98,8 +99,16 @@ app.get('/additem', function (request, response) {
     response.render('addpage',{loginName:request.session.user});
 });
 
-
-
+app.get('/like', function (request, response) {
+    var movieName = request.query.movieName;
+    var items = likeAndSort('items', movieName);
+    response.render('listpage',{ items:items });
+});
+app.get('/delete', function (request, response) {
+    var item = request.query.movieName;
+    var items = deleteAndSort('items', item);
+    response.render('listpage',{ items:items });
+});
 // click Welcome on login page
 app.post('/login', function (request, response) {
     var loginName = request.body.loginName;
@@ -107,11 +116,19 @@ app.post('/login', function (request, response) {
 
     // save login name in session so it's available later
     request.session.user = loginName;
+    var passwordMatched = userPasswordMatch(loginName,password);
+    if(passwordMatched) {
+        response.render('listpage', {items: Item.find()});
 
-    //hint: check is password is good or not, if not load same page with error as below
+    } else {
+        response.render('index', {message: "Invalid user name or password"});
+    }
+
+    //hint: check is password is good or not, if notload same page with error as below
     //response.render('index', {message: "Invalid user name or password"});
 
-    response.render('listpage', {items: Item.find()});
+
+    //response.render('listpage', {items: Item.find()});
 
 });
 
@@ -122,7 +139,7 @@ app.post('/saveitem', function (request, response) {
 
     // hint #1: find the helper function that will help save the information first
     // hint #2: make sure to send the list of items to the list page
-
-    response.render('listpage',{ items:[] });
+    var items = saveFormAndReturnAllItems(request.body)
+ response.render('listpage',{ items:items });
 });
 
